@@ -17,7 +17,6 @@ import io.flutter.plugin.common.BinaryMessenger
 import io.flutter.plugin.common.MethodCall
 import io.flutter.plugin.common.MethodChannel
 import io.flutter.plugin.common.MethodChannel.MethodCallHandler
-import io.flutter.plugin.common.PluginRegistry.Registrar
 import java.io.File
 import java.text.SimpleDateFormat
 import java.util.*
@@ -88,11 +87,9 @@ class VideoCompressV2Plugin: FlutterPlugin, MethodCallHandler {
         val audioTrackStrategy: TrackStrategy
 
         when (quality) {
-
           0 -> {
             videoTrackStrategy = DefaultVideoStrategy.atMost(720).build()
           }
-
           1 -> {
             videoTrackStrategy = DefaultVideoStrategy.atMost(360).build()
           }
@@ -100,7 +97,6 @@ class VideoCompressV2Plugin: FlutterPlugin, MethodCallHandler {
             videoTrackStrategy = DefaultVideoStrategy.atMost(640).build()
           }
           3 -> {
-
             assert(value = frameRate != null)
             videoTrackStrategy = DefaultVideoStrategy.Builder()
               .keyFrameInterval(3f)
@@ -141,7 +137,6 @@ class VideoCompressV2Plugin: FlutterPlugin, MethodCallHandler {
         }else{
           UriDataSource(context, Uri.parse(path))
         }
-
 
         transcodeFuture = Transcoder.into(destPath)
           .addDataSource(dataSource)
@@ -191,15 +186,5 @@ class VideoCompressV2Plugin: FlutterPlugin, MethodCallHandler {
     channel.setMethodCallHandler(this)
     _context = context
     _channel = channel
-  }
-
-  companion object {
-    private const val TAG = "video_compress"
-
-    @JvmStatic
-    fun registerWith(registrar: Registrar) {
-      val instance = VideoCompressV2Plugin()
-      instance.init(registrar.context(), registrar.messenger())
-    }
   }
 }
